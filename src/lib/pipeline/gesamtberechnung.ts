@@ -142,10 +142,13 @@ export function berechneGesamtergebnis(input: FormInput): GesamtberechnungErgebn
   }
 
   const baseline = szenario((f) => f.estOhne, (f) => f.estOhne, 0, 0);
+  // Grenzsteuersatz "Mit Fünftelregelung" wird am vollen Gesamteinkommen (zvE + Abfindung) abgelesen,
+  // nicht am Fünftel-Zwischenwert: die Fünftelregelung ändert nur die Berechnungsmethode der Steuer,
+  // nicht die Progressionsstufe/das Gesamteinkommen, in der/dem man sich tatsächlich befindet.
   const mitFuenftelregelung = szenario(
     (f) => f.estMitFuenftelregelung,
     (f) => f.estMitFuenftelregelung,
-    input.abfindung / 5,
+    input.abfindung,
     input.abfindung,
   );
   const ohneFuenftelregelung = szenario(

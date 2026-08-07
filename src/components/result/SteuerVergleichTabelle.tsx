@@ -9,6 +9,10 @@ function delta(szenario: SzenarioErgebnis, baseline: SzenarioErgebnis): number {
   return szenario.summeSteuern - baseline.summeSteuern;
 }
 
+function kindergeldVerrechnet(szenario: SzenarioErgebnis, kindergeldJahr: number): number {
+  return szenario.kinderfreibetragAngewandt ? kindergeldJahr : 0;
+}
+
 export function SteuerVergleichTabelle({ ergebnis }: Props) {
   const { baseline, mitFuenftelregelung, ohneFuenftelregelung } = ergebnis;
 
@@ -35,6 +39,14 @@ export function SteuerVergleichTabelle({ ergebnis }: Props) {
             <td>{formatEuro(baseline.estTatsaechlich)}</td>
             <td>{formatEuro(mitFuenftelregelung.estTatsaechlich)}</td>
             <td>{formatEuro(ohneFuenftelregelung.estTatsaechlich)}</td>
+          </tr>
+          <tr className="tabelle-fussnotenzeile">
+            <th scope="row" title="Im Kinderfreibetrag-Fall bereits ausgezahltes und hier verrechnetes Kindergeld — in der Einkommensteuer oben bereits enthalten.">
+              davon Kindergeld verrechnet
+            </th>
+            <td>{formatEuro(kindergeldVerrechnet(baseline, ergebnis.kindergeldJahr))}</td>
+            <td>{formatEuro(kindergeldVerrechnet(mitFuenftelregelung, ergebnis.kindergeldJahr))}</td>
+            <td>{formatEuro(kindergeldVerrechnet(ohneFuenftelregelung, ergebnis.kindergeldJahr))}</td>
           </tr>
           <tr>
             <th scope="row" title="Solidaritätszuschlag">
@@ -81,9 +93,13 @@ export function SteuerVergleichTabelle({ ergebnis }: Props) {
         </tbody>
       </table>
       <p className="field-hint">
-        Grenzsteuersatz: Steuersatz auf den letzten Euro des jeweils maßgeblichen Einkommens. Gesamtsteuersatz:
-        alle Steuern (ESt, Soli, Kirchensteuer) im Verhältnis zum gesamten zu versteuernden Einkommen
-        (bei „Mit"/„Ohne Fünftelregelung" inkl. Abfindung).
+        „Davon Kindergeld verrechnet": Nur relevant, wenn der Kinderfreibetrag günstiger war als das erhaltene
+        Kindergeld — dieses wird dann der Einkommensteuer wieder hinzugerechnet (§31 EStG) und steckt in der
+        Zeile „Einkommensteuer" und in „davon Abfindung" bereits mit drin. Grenzsteuersatz: Steuersatz auf den
+        letzten Euro des jeweils maßgeblichen Einkommens (bei „Mit"/„Ohne Fünftelregelung" identisch, da beide
+        dasselbe Gesamteinkommen betreffen — nur die Berechnungsmethode unterscheidet sich). Gesamtsteuersatz:
+        alle Steuern (ESt, Soli, Kirchensteuer) im Verhältnis zum gesamten zu versteuernden Einkommen (bei
+        „Mit"/„Ohne Fünftelregelung" inkl. Abfindung).
       </p>
     </div>
   );

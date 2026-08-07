@@ -82,6 +82,11 @@ describe('berechneGesamtergebnis — Szenario 1: Single ohne Progressionsvorbeha
 
     // Die Fünftelregelung senkt den effektiven Gesamtsteuersatz auf dasselbe Gesamteinkommen.
     expect(ergebnis.mitFuenftelregelung.gesamtsteuersatz).toBeLessThan(ergebnis.ohneFuenftelregelung.gesamtsteuersatz);
+
+    // Der Grenzsteuersatz beschreibt die Progressionsstufe beim tatsächlichen Gesamteinkommen (zvE + Abfindung) —
+    // die Fünftelregelung ändert nur die Berechnungsmethode, nicht diese Progressionsstufe, daher identisch
+    // zum Grenzsteuersatz "Ohne Fünftelregelung" (gleiche Kinderfreibetrag-Variante vorausgesetzt).
+    expect(ergebnis.mitFuenftelregelung.grenzsteuersatz).toBeCloseTo(ergebnis.ohneFuenftelregelung.grenzsteuersatz, 5);
   });
 
   it('liefert konsistente Fünftelregelung-Zwischenwerte (zvE+1/5, dazugehörige ESt, Steuer nur auf die Abfindung)', () => {
