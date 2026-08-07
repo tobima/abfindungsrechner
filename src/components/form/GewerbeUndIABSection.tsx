@@ -23,6 +23,8 @@ export function GewerbeUndIABSection({ input, dispatch }: Props) {
           label="Gewinn vor Investitionsabzugsbetrag"
           value={input.gewinnGewerbeEigenVorIab}
           onChange={(value) => dispatch({ type: 'SET_FIELD', field: 'gewinnGewerbeEigenVorIab', value })}
+          min={-1000000}
+          hint="Bei einem Verlust negative Zahl eingeben."
         />
         <NumberField
           label="Geplante Investitionskosten"
@@ -38,6 +40,8 @@ export function GewerbeUndIABSection({ input, dispatch }: Props) {
             label="Gewinn vor Investitionsabzugsbetrag"
             value={input.gewinnGewerbePartnerVorIab}
             onChange={(value) => dispatch({ type: 'SET_FIELD', field: 'gewinnGewerbePartnerVorIab', value })}
+            min={-1000000}
+            hint="Bei einem Verlust negative Zahl eingeben."
           />
           <NumberField
             label="Geplante Investitionskosten"
