@@ -1,0 +1,65 @@
+import type { YearConstants } from '../types';
+
+export const constants2026: YearConstants = {
+  jahr: 2026,
+  grundtarif: {
+    grundfreibetrag: 12348,
+    zone2Obergrenze: 17799,
+    zone3Obergrenze: 69878,
+    zone4Obergrenze: 277825,
+    zone2Koeffizient: 914.51,
+    zone2Summand: 1400,
+    zone3Koeffizient: 173.1,
+    zone3Summand: 2397,
+    zone3Addend: 1034.87,
+    zone4Satz: 0.42,
+    zone4Abzug: 11135.63,
+    zone5Satz: 0.45,
+    zone5Abzug: 19470.38,
+  },
+  soli: {
+    satz: 0.055,
+    milderungszoneSatz: 0.119,
+    freigrenzeEinzeln: 20350,
+    freigrenzeZusammen: 40700,
+  },
+  kirchensteuer: {
+    satzAchtProzentLaender: ['Bayern', 'Baden-Württemberg'],
+    satzAcht: 0.08,
+    satzNeun: 0.09,
+  },
+  kinder: {
+    freibetragKombiniertProKind: 9756,
+    kindergeldProMonat: 259,
+  },
+  vorsorgeaufwendungen: {
+    hoechstbetragEinzeln: 30826,
+    hoechstbetragZusammen: 61652,
+  },
+  spenden: {
+    gemeinnuetzigMaxAnteilGdE: 0.2,
+    parteispendeErmaessigungSatz: 0.5,
+    parteispendeErmaessigungHoechstbetragEinzeln: 1650,
+    parteispendeErmaessigungHoechstbetragZusammen: 3300,
+    parteispendeSonderausgabenHoechstbetragEinzeln: 3300,
+    parteispendeSonderausgabenHoechstbetragZusammen: 6600,
+  },
+  investitionsabzugsbetrag: {
+    maxAnteilInvestitionskosten: 0.5,
+    hoechstbetrag: 200000,
+    gewinngrenze: 200000,
+  },
+  sozialversicherung: {
+    bbgRvAvJahr: 101400,
+    bbgKvPvJahr: 69750,
+    rvSatzArbeitnehmer: 0.093,
+    avSatzArbeitnehmer: 0.013,
+    kvAllgemeinerSatz: 0.146,
+    kvDurchschnittlicherZusatzbeitrag: 0.029,
+    pvGrundsatzArbeitnehmer: 0.018,
+    pvKinderlosenzuschlag: 0.006,
+    pvAbschlagProKind: 0.0025,
+    pvAbschlagMaxKinder: 4,
+  },
+  arbeitnehmerPauschbetrag: 1230,
+};
