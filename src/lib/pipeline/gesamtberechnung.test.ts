@@ -89,6 +89,26 @@ describe('berechneGesamtergebnis — Szenario 1: Single ohne Progressionsvorbeha
     expect(ergebnis.mitFuenftelregelung.grenzsteuersatz).toBeCloseTo(ergebnis.ohneFuenftelregelung.grenzsteuersatz, 5);
   });
 
+  it('weist eine Grenzbelastung von deutlich über 100% aus, wenn die Abfindung den Fünftel-Punkt in eine hohe Progressionszone hebt', () => {
+    // zvE=10.000€ liegt in der Grundfreibetragszone (0% Grenzsteuersatz), eine sehr hohe Abfindung
+    // hebt den Fünftel-Punkt (zvE+Abfindung/5) weit in die 42%-Zone -> Falleneffekt der Fünftelregelung.
+    const ergebnis = berechneGesamtergebnis(
+      baseInput({
+        sozialversicherungEigen: leerePerson({ bruttoWeiteresEinkommenJahr: 11230 }), // 11.230-1.230=10.000€ zvE
+        abfindung: 500000,
+      }),
+    );
+
+    expect(ergebnis.grenzbelastungWeiteresEinkommenMitFuenftelregelung).toBeGreaterThan(1);
+  });
+
+  it('liefert 0 Grenzbelastung auf weiteres Einkommen ohne Abfindung', () => {
+    const ergebnis = berechneGesamtergebnis(
+      baseInput({ sozialversicherungEigen: leerePerson({ bruttoWeiteresEinkommenJahr: 40000 }), abfindung: 0 }),
+    );
+    expect(ergebnis.grenzbelastungWeiteresEinkommenMitFuenftelregelung).toBe(0);
+  });
+
   it('liefert konsistente Fünftelregelung-Zwischenwerte (zvE+1/5, dazugehörige ESt, Steuer nur auf die Abfindung)', () => {
     const ergebnis = berechneGesamtergebnis(
       baseInput({

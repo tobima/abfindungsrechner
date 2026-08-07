@@ -12,7 +12,7 @@ import { buildTariffFn } from '../tariff/tariffFn';
 import { withProgressionsvorbehalt } from '../tariff/progressionsvorbehalt';
 import { berechneSoli } from '../tariff/soli';
 import { berechneKirchensteuer } from '../tariff/kirchensteuer';
-import { berechneGrenzsteuersatz } from '../tariff/grenzsteuersatz';
+import { berechneGrenzbelastungWeiteresEinkommen, berechneGrenzsteuersatz } from '../tariff/grenzsteuersatz';
 import { berechneSvFuerPerson, type PersonSvErgebnis } from '../sozialversicherung/svGesamt';
 import type { FormInput, GesamtberechnungErgebnis, SzenarioErgebnis } from '../types';
 import { floorToEuro } from '../../utils/rounding';
@@ -164,6 +164,15 @@ export function berechneGesamtergebnis(input: FormInput): GesamtberechnungErgebn
   const estMitEinemFuenftelAbfindung = fuenftelGewaehlt.estMitEinemFuenftel;
   const steuerNurAufAbfindungMitFuenftelregelung = fuenftelGewaehlt.steuerAufAbfindungMitFuenftelregelung;
 
+  // §34 EStG-Falleneffekt: Grenzbelastung auf einen zusätzlichen Euro REGULÄREN Einkommens, während die
+  // Abfindung unverändert bleibt und weiterhin über die Fünftelregelung versteuert wird — kann durch die
+  // ×5-Multiplikation deutlich über 100% liegen (siehe berechneGrenzbelastungWeiteresEinkommen).
+  const zvEBasisMitFuenftelregelung = zvEMitEinemFuenftelAbfindung - input.abfindung / 5;
+  const grenzbelastungWeiteresEinkommenMitFuenftelregelung =
+    input.abfindung > 0
+      ? berechneGrenzbelastungWeiteresEinkommen(tariffEffektiv, zvEBasisMitFuenftelregelung, input.abfindung)
+      : 0;
+
   // Stage 8: Netto-Abfindung je Szenario und Gesamt-Steuerersparnis durch die Fünftelregelung.
   const belastungMit = mitFuenftelregelung.summeSteuern - baseline.summeSteuern;
   const belastungOhne = ohneFuenftelregelung.summeSteuern - baseline.summeSteuern;
@@ -183,6 +192,7 @@ export function berechneGesamtergebnis(input: FormInput): GesamtberechnungErgebn
     zvEMitEinemFuenftelAbfindung,
     estMitEinemFuenftelAbfindung,
     steuerNurAufAbfindungMitFuenftelregelung,
+    grenzbelastungWeiteresEinkommenMitFuenftelregelung,
     baseline,
     mitFuenftelregelung,
     ohneFuenftelregelung,

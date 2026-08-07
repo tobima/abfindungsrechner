@@ -79,6 +79,12 @@ export interface GesamtberechnungErgebnis {
   estMitEinemFuenftelAbfindung: number;
   /** Nur der auf die Abfindung entfallende Steueranteil unter der Fünftelregelung (Differenz × 5). */
   steuerNurAufAbfindungMitFuenftelregelung: number;
+  /**
+   * §34 EStG-Falleneffekt: Grenzbelastung auf einen zusätzlichen Euro regulären Einkommens, während die
+   * Abfindung unverändert bleibt und weiter über die Fünftelregelung versteuert wird. Kann durch die
+   * ×5-Multiplikation der Fünftelregelung-Formel deutlich über 100% liegen.
+   */
+  grenzbelastungWeiteresEinkommenMitFuenftelregelung: number;
   baseline: SzenarioErgebnis;
   mitFuenftelregelung: SzenarioErgebnis;
   ohneFuenftelregelung: SzenarioErgebnis;

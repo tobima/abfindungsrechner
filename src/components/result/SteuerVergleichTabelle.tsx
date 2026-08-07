@@ -101,6 +101,23 @@ export function SteuerVergleichTabelle({ ergebnis }: Props) {
         alle Steuern (ESt, Soli, Kirchensteuer) im Verhältnis zum gesamten zu versteuernden Einkommen (bei
         „Mit"/„Ohne Fünftelregelung" inkl. Abfindung).
       </p>
+      {ergebnis.grenzbelastungWeiteresEinkommenMitFuenftelregelung > 0 && (
+        <div
+          className={
+            ergebnis.grenzbelastungWeiteresEinkommenMitFuenftelregelung > 1
+              ? 'ergebnis-warnung ergebnis-warnung-kritisch'
+              : 'ergebnis-warnung'
+          }
+        >
+          <strong>Achtung — Fünftelregelung-Falleneffekt:</strong> Solange die Abfindung über die
+          Fünftelregelung versteuert wird, erhöht ein zusätzlicher Euro <em>regulären</em> Einkommens
+          (z.B. Gehaltserhöhung, Bonus, weiterer Job im selben Jahr) die Gesamtsteuer um{' '}
+          <strong>{formatProzent(ergebnis.grenzbelastungWeiteresEinkommenMitFuenftelregelung)}</strong> dieses
+          einen Euros — nicht um den regulären Grenzsteuersatz. Grund: Die Fünftelregelung berechnet die
+          Abfindungssteuer aus der Differenz am „Fünftel-Punkt" (zvE+Abfindung/5) und multipliziert sie mit 5;
+          steigt das reguläre zvE, wird diese Differenz an einer höheren Stelle im Tarif neu ermittelt.
+        </div>
+      )}
     </div>
   );
 }

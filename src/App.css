@@ -325,6 +325,21 @@
   padding-left: 1.1rem;
 }
 
+.ergebnis-warnung {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-top: 0.9rem;
+}
+
+.ergebnis-warnung-kritisch {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
 .tabelle-wrapper {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
